@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
+const mongoConnect = require('./util/database');
 
 const app = express();
 
@@ -29,3 +30,8 @@ app.use((req, res, next) => {   // this will be run when there is any incoming r
 // app.use(shopRoutes);
 
 app.use(errorController.get404);
+
+mongoConnect((client) => {
+    console.log('mongoConnect..... ', client);
+    app.listen(3000);
+});
