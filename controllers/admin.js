@@ -98,8 +98,8 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  req.user
-  .getCopy_sqlz_products()
+  Product
+  .fetchAll()
   .then(products => {
     console.log('getProducts..... ', products);
 
