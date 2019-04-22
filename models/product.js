@@ -1,3 +1,4 @@
+const mongodb = require('mongodb');
 const getDB = require('../util/database').getDB;
 
 class Product {
@@ -18,6 +19,13 @@ class Product {
     return db.collection('products')
     .find()
     .toArray(); // find() return cursor that points to documents. Therefore, toArray() is needed to return Promise. ref: https://docs.mongodb.com/manual/reference/method/cursor.toArray/index.html
+  }
+
+  static findById(prodId) {
+    const db = getDB();
+    return db.collection('products')
+    .find( {_id: new mongodb.ObjectId(prodId)} )
+    .next();
   }
 }
 
