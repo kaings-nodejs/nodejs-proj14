@@ -33,17 +33,17 @@ exports.getEditProduct = (req, res, next) => {
   }
   const prodId = req.params.productId;
 
-  req.user
-  .getCopy_sqlz_products({ where: {id: prodId} })
-  .then(products => {
-    if (!products) {
+  Product
+  .findById(prodId)
+  .then(product => {
+    if (!product) {
       return res.redirect('/');
     }
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
       path: '/admin/edit-product',
       editing: editMode,
-      product: products[0]
+      product: product
     });
   })
   .catch(err => {console.log(err)});
@@ -56,45 +56,15 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  // way 1 to update DB content
+  const product = new Product(updatedTitle, updatedPrice, updatedDesc, updatedImageUrl, prodId);
 
-  Product.findByPk(prodId)
-  .then(product => {
-    product.title = updatedTitle;
-    product.price = updatedPrice;
-    product.description = updatedDesc;
-    product.imageUrl = updatedImageUrl;
-
-    return product.save();   // save the data to DB, if the product does not exist, it will create new one (same as create)
-  })
+  product
+  .save()
   .then(result => {
     console.log(result);
     res.redirect('/admin/products');
   })
   .catch(err => {console.log(err)});
-  
-
-  // way 2 to update DB content
-  /*
-  Product.findByPk(prodId)
-  .then(product => {
-
-    const updatedProduct = {
-      title: updatedTitle,
-      price: updatedPrice,
-      description: updatedDesc,
-      imageUrl: updatedImageUrl
-    }
-
-    return product.update(updatedProduct);  // update DB. ref: http://docs.sequelizejs.com/manual/instances.html#updating---saving---persisting-an-instance
-  })
-  .then(result => {
-    console.log(result);
-    res.redirect('/admin/products');
-  })
-  .catch(err => {console.log(err)});
-  */
-
 };
 
 exports.getProducts = (req, res, next) => {
