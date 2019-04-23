@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 const mongoConnect = require('./util/database').mongoConnect;
+const User = require('./models/user');
 
 const app = express();
 
@@ -19,13 +20,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use((req, res, next) => {   // this will be run when there is any incoming request. it is put on top of all routes. All incoming request will trigger this middleware
-    // User.findByPk(1)
-    // .then(user => {
-    //     req.user = user;    // store sequelize object "user" into "req.user" so that it can be called/used globally
-    //     next();     // move to the next middleware
-    // })
-    // .catch(err => {console.log(err)});
-    next();
+    User.findById('5cbeddce7f959c02b4ba222c')
+    .then(user => {
+        console.log('user..... ', user);
+        req.user = user;    // store object "user" into "req.user" so that it can be called/used globally
+        next();     // move to the next middleware
+    })
+    .catch(err => {console.log(err)});
 });
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
