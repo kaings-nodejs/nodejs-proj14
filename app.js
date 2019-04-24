@@ -23,7 +23,7 @@ app.use((req, res, next) => {   // this will be run when there is any incoming r
     User.findById('5cbeddce7f959c02b4ba222c')
     .then(user => {
         console.log('user..... ', user);
-        req.user = user;    // store object "user" into "req.user" so that it can be called/used globally
+        req.user = new User(user.username, user.email, user._id, user.cart);    // store object "user" into "req.user" so that it can be called/used globally
         next();     // move to the next middleware
     })
     .catch(err => {console.log(err)});

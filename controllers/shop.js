@@ -59,12 +59,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  req.user
-  .getCart()
-  .then(cart => {
-    console.log('getCart_cart.....', cart);
-    return cart.getCopy_sqlz_products();
-  })
+  req.user.getCart()
   .then(products => {
     res.render('shop/cart', {
       path: '/cart',
@@ -77,37 +72,16 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
-  let fetchedCart;
-  let qty = 1;
-
-  req.user
-  .getCart()
-  .then(cart => {
-    //console.log('postCart_cart.....', cart);
-    fetchedCart = cart;
-    cart
-    .getCopy_sqlz_products({ where: { id: prodId } })
-    .then(products => {
-      console.log('postCart_products..... ', products)
-      if (products.length > 0) {
-        const product = products[0];
-        qty += product.cartItem.quantity;
-        return product;
-      }
-      return Product.findByPk(prodId);
-    })
-    .then(product => {
-      fetchedCart.addCopy_sqlz_product(product, {
-        through: { quantity: qty }
-      });
-    })
-    .then(result => {
-      console.log('postCart_result..... ', result);
-      res.redirect('/cart');
-    })
-    .catch(err => {console.log(err)})
+  Product.findById(prodId)
+  .then(product => {
+    console.log('postCart_product..... ', product);
+    return req.user.addToCart(product);
   })
-  .catch(err => {console.log(err)})
+  .then(result => {
+    console.log('postCart_result..... ', result);
+    res.redirect('/cart');
+  })
+  .catch(err => {console.log(err)});
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
