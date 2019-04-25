@@ -63,6 +63,37 @@ class User {
         .updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: {cart: {items: updatedCartContent}}});
     }
 
+    addOrder() {
+        const db = getDB();
+        const userData = {
+            _id: new mongodb.ObjectId(this._id),
+            username: this.username
+        };
+
+        return this.getCart()
+        .then(products => {
+            const order = {
+                items: products,
+                user: {
+                    _id: new mongodb.ObjectId(this._id),
+                    username: this.username
+                }
+            };
+
+            return db.collection('orders').insertOne(order)
+        })
+        .then(result => {
+            console.log('addOrder_result..... ', result);
+            const clearCart = {items: []};
+            return db.collection('users')
+            .updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: {cart: clearCart}})
+        });
+
+        /* note */
+        // return db.collection('orders')
+        // .insertOne({ ...this.cart, ...{userId: new mongodb.ObjectId(this._id)} });   // we can also do this
+    }
+
     static findById(userId) {
         const db = getDB();
         return db.collection('users').findOne({ _id: new mongodb.ObjectId(userId) });   // this will return the object instead. "find()" will return cursor. Therefore, need "next()" or "toArray()"

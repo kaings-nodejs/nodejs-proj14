@@ -83,37 +83,12 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
-
-  req.user
-  .getCart()
-  .then(cart => {
-    fetchedCart = cart;
-
-    console.log('postOrder_cart..... ', cart);
-    console.log('postOrder_cart.cartItem..... ', cart.cartItem); // undefined
-    return cart.getCopy_sqlz_products();
+  req.user.addOrder()
+  .then(result => {
+    console.log('postOrder_result..... ', result);
+    res.redirect('/orders');
   })
-  .then(products => {
-    console.log('postOrder_products..... ', products);
-    products.map(product => {console.log('postOrder_product.cartItem..... ', product.cartItem.quantity)}); // cartItem can be accessed via product
-
-    return req.user
-    .createOrder()
-    .then(order => {
-      return order.addCopy_sqlz_products(products.map(product => {
-        product.orderItem = {quantity: product.cartItem.quantity};
-        return product;
-      }));
-    })
-    .then(result => {
-      fetchedCart.setCopy_sqlz_products(null);
-
-      res.redirect('/orders');
-    })
-    .catch(err => {console.log(err)});
-  })
-  .catch(err => {console.log(err)})
+  .catch(err => {console.log(err)});
 };
 
 exports.getOrders = (req, res, next) => {
