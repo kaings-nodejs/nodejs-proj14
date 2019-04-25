@@ -94,6 +94,13 @@ class User {
         // .insertOne({ ...this.cart, ...{userId: new mongodb.ObjectId(this._id)} });   // we can also do this
     }
 
+    getOrders() {
+         const db = getDB();
+         return db.collection('orders')
+         .find({'user._id': new mongodb.ObjectId(this._id)})
+         .toArray();
+    }
+
     static findById(userId) {
         const db = getDB();
         return db.collection('users').findOne({ _id: new mongodb.ObjectId(userId) });   // this will return the object instead. "find()" will return cursor. Therefore, need "next()" or "toArray()"

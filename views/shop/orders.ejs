@@ -10,10 +10,10 @@
                 <ul>
                     <% orders.forEach(order => { %>
                         <li>
-                            <h1># <%= order.id %></h1>
+                            <h1># <%= order._id %></h1>
                             <ul>
-                                <% order.copy_sqlz_products.forEach(product => { %>
-                                    <li><%= product.title %> ( QTY: <%= product.orderItem.quantity %> )</li>
+                                <% order.items.forEach(product => { %>
+                                    <li><%= product.title %> ( QTY: <%= product.quantity %> )</li>
                                 <% }); %>
                             </ul>
                         </li>

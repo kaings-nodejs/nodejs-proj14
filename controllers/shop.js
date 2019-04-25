@@ -92,8 +92,7 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user
-  .getOrders({include: ['copy_sqlz_products']})
+  req.user.getOrders()
   .then(orders => {
     console.log('getOrders_orders..... ', orders);
     res.render('shop/orders', {
@@ -102,6 +101,18 @@ exports.getOrders = (req, res, next) => {
       orders: orders
     });
   })
+  .catch(err => {console.log(err)});
+
+  // req.user
+  // .getOrders({include: ['copy_sqlz_products']})
+  // .then(orders => {
+  //   console.log('getOrders_orders..... ', orders);
+  //   res.render('shop/orders', {
+  //     path: '/orders',
+  //     pageTitle: 'Your Orders',
+  //     orders: orders
+  //   });
+  // })
 
   
 };
