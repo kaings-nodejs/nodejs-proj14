@@ -61,12 +61,19 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  const product = new Product(updatedTitle, updatedPrice, updatedDesc, updatedImageUrl, prodId);
+  //const product = new Product(updatedTitle, updatedPrice, updatedDesc, updatedImageUrl, prodId);
 
-  product
-  .save()
+  Product.findById(prodId)
+  .then(product => {
+    console.log('postEditProduct_product..... ', product);
+    product.title = updatedTitle;
+    product.price = updatedPrice;
+    product.imageUrl = updatedImageUrl;
+    product.description = updatedDesc;
+    return product.save();
+  })
   .then(result => {
-    console.log(result);
+    console.log('postEditProduct_result..... ', result);
     res.redirect('/admin/products');
   })
   .catch(err => {console.log(err)});
