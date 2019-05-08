@@ -18,6 +18,11 @@ const productSchema = new Schema({
   imageUrl: {
     type: String,
     required: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',    // the reference to other collection model. The name 'User' follows the model name we created
+    required: true
   }
 });
 
