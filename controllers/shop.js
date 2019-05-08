@@ -46,12 +46,15 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart()
-  .then(products => {
+  req.user
+  .populate('cart.items.productId')   // populate related 'Product' into path 'cart.items.productId' (as set in model as ref in the same path)
+  .execPopulate()   // convert populate into Promise
+  .then(userData => {
+    console.log('getCart_cartItems..... ', userData.cart.items)
     res.render('shop/cart', {
       path: '/cart',
       pageTitle: 'Your Cart',
-      products: products
+      products: userData.cart.items
     });
   })
   .catch(err => {console.log(err)});
