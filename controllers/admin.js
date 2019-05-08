@@ -85,6 +85,13 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   Product
   .find()
+  //.select('title price -_id')   // function available after find(), to select only certain documents from the collection. In example, show only 'title', 'price', & DONOT show '_id' (using '-' infront)
+  //.populate('userId')   // populate the related 'User' document (set by using 'ref' in model schema) into 'userId' document/path
+  //.populate('userId', 'username')   // populate the related 'User' document (set by using 'ref' in model schema) into 'userId' document/path. But, only show 'username' & '_id' ('_id' will always show unless excluded)
+  /* .populate({
+    path: 'userId',
+    select: 'username -_id'   // populate 'User' document. But, only show 'username', exclude '_id'
+  }) */
   .then(products => {
     console.log('getProducts..... ', products);
 
