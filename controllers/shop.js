@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Order = require('../models/order');
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -87,7 +88,31 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  req.user.addOrder()
+  req.user
+  .populate('cart.items.productId')
+  .execPopulate()
+  .then(userData => {
+    console.log('postOrder_userData.cart.items..... ', userData.cart.items);
+
+    const products = userData.cart.items.map(productObj => {
+      return { 
+        // product: productObj.productId,    // (1) this won't work! Only store the ObjectId of the product
+        // product: { ...productObj.productId },  // (2) this WORKS! It will populate the product property with the object metadata of Product
+        product: { ...productObj.productId._doc },  //  this WORKS too as (2) _doc is to specify only the metadata of the object
+        quantity: productObj.quantity 
+      };
+    });
+
+    const order = new Order({
+      user: {
+        userId: req.user,
+        username: req.user.username
+      },
+      items: products
+    });
+
+    return order.save();
+  })
   .then(result => {
     console.log('postOrder_result..... ', result);
     res.redirect('/orders');
