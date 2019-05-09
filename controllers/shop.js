@@ -124,7 +124,7 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user.getOrders()
+  Order.find({'user.userId': req.user._id})   // find order that belongs to a particular user
   .then(orders => {
     console.log('getOrders_orders..... ', orders);
     res.render('shop/orders', {
