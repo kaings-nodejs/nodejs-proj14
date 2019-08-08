@@ -33,7 +33,15 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoose.connect('mongodb+srv://gr33nlink17:Qxcg2ZMfxJ20sxaf@cluster0-lkalu.mongodb.net/shop')
+/* 
+instead of in the code (NOT recommended), set the credential & sensitive info in the environment variable.
+In nodejs, environment variables that are set can be access via 'process.env' (can console log to see more details).
+For nodemon (since we use for dev environment), we can set additional environment variables in 'nodemon.json'.
+But, since we only use nodemon for development, this is not good choice for production
+ */
+mongoose.connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-lkalu.mongodb.net/${process.env.MONGO_DATABASE}`
+    )  
 .then(result => {
     console.log(result);
 
