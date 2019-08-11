@@ -33,6 +33,10 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+
+console.log('[PRINT] process.env..... ', process.env);  // you can see that all the environment variables can be access from here
+console.log('[PRINT] process.env.NODE_ENV..... ', process.env.NODE_ENV);    // for production, production server will AUTOMATICALLY set NODE_ENV as 'production'. But, for now it will be set as 'undefined'
+
 /* 
 instead of in the code (NOT recommended), set the credential & sensitive info in the environment variable.
 In nodejs, environment variables that are set can be access via 'process.env' (can console log to see more details).
