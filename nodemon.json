@@ -1,7 +1,5 @@
 {
     "env": {
-        "MONGO_USER": "gr33nlink17",
-        "MONGO_PASSWORD": "Qxcg2ZMfxJ20sxaf",
-        "MONGO_DATABASE": "shop"
+
     }
 }
