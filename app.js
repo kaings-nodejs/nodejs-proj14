@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -18,9 +19,14 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
+const accessLogStream = fs.createWriteStream(
+    path.join(__dirname, 'access.log'),
+    {flags: 'a'}        // new log will be appended, ref: https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
+    );
+
 app.use(helmet());  // Helmet helps you secure your Express apps by setting various HTTP headers. It’s not a silver bullet, but it can help! You can check in network, localhost check for the Response Header! before vs after using helmet
 app.use(compression());    // use compression to compress web assets, such as html, css, js. But, not include image files (there is other way to compress image assets)
-app.use(morgan('combined'));      // use morgan to provide logging service in express app (using this code, it will print the logging in the console). ref: https://www.npmjs.com/package/morgan
+app.use(morgan('combined', {stream: accessLogStream}));      // use morgan to provide logging service in express app (using this code, it will print the logging in the console). ref: https://www.npmjs.com/package/morgan
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));

@@ -1,0 +1,4 @@
+::1 - - [12/Aug/2019:15:32:13 +0000] "GET /cart HTTP/1.1" 200 - "http://localhost:3000/products" "Mozilla/5.0 (Macintosh; ... ... ... ... ..."
+::1 - - [12/Aug/2019:15:32:13 +0000] "GET /css/cart.css HTTP/1.1" 200 364 "http://localhost:3000/cart" "Mozilla/5.0 (Macintosh; ... ... ... ... ..."
+::1 - - [12/Aug/2019:15:32:13 +0000] "GET /js/main.js HTTP/1.1" 200 519 "http://localhost:3000/cart" "Mozilla/5.0 (Macintosh; ... ... ... ... ..."
+::1 - - [12/Aug/2019:15:32:13 +0000] "GET /css/main.css HTTP/1.1" 200 - "http://localhost:3000/cart" "Mozilla/5.0 (Macintosh; ... ... ... ... ..."
