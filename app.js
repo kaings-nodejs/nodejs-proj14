@@ -75,7 +75,7 @@ mongoose.connect(
             user.save();
         }
 
-        app.listen(3000);
+        app.listen(process.env.PORT || 3000);   // get PORT from environment variables if not set then use 3000. In production, this will be automatically configured by the hosting server
     });
 })
 .catch(err => {console.log(err)});
