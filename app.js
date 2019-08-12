@@ -25,8 +25,9 @@ const accessLogStream = fs.createWriteStream(
     {flags: 'a'}        // new log will be appended, ref: https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
     );
 
-const privateKey = fs.readFileSync('testlocalssl.key');     // use readFileSync is because we DO NOT want to execute other code until the reading of these ssl file is completed. DO NOT procede with other code before this process is completed!
-const certificate = fs.readFileSync('testlocalssl.cert');   // use readFileSync is because we DO NOT want to execute other code until the reading of these ssl file is completed. DO NOT procede with other code before this process is completed!
+/* these code WON'T be necessary in production because it (SSL) will be done automatically by the hosting server */
+//const privateKey = fs.readFileSync('testlocalssl.key');     // use readFileSync is because we DO NOT want to execute other code until the reading of these ssl file is completed. DO NOT procede with other code before this process is completed!
+//const certificate = fs.readFileSync('testlocalssl.cert');   // use readFileSync is because we DO NOT want to execute other code until the reading of these ssl file is completed. DO NOT procede with other code before this process is completed!
 
 app.use(helmet());  // Helmet helps you secure your Express apps by setting various HTTP headers. It’s not a silver bullet, but it can help! You can check in network, localhost check for the Response Header! before vs after using helmet
 app.use(compression());    // use compression to compress web assets, such as html, css, js. But, not include image files (there is other way to compress image assets)
@@ -78,8 +79,10 @@ mongoose.connect(
 
             user.save();
         }
-        https.createServer({cert: certificate, key: privateKey}, app)   // setup https connection which is why ssl cert & privatekey is required here. After this setup, this app can only be reach with 'https://localhost:3000', normal 'http://localhost:3000' cannot load the app now
-        .listen(process.env.PORT || 3000);   // get PORT from environment variables if not set then use 3000. In production, this will be automatically configured by the hosting server
+        /* this https connection code WON'T be necessary in production because it will be done automatically by the hosting server */
+        //https.createServer({cert: certificate, key: privateKey}, app)   // setup https connection which is why ssl cert & privatekey is required here. After this setup, this app can only be reach with 'https://localhost:3000', normal 'http://localhost:3000' cannot load the app now
+        //.listen(process.env.PORT || 3000);   // get PORT from environment variables if not set then use 3000. In production, this will be automatically configured by the hosting server
+        app.listen(process.env.PORT || 3000);   // just setup normal http connection in production code
     });
 })
 .catch(err => {console.log(err)});
