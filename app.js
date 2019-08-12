@@ -79,3 +79,8 @@ mongoose.connect(
     });
 })
 .catch(err => {console.log(err)});
+
+// create own ssl cert for localhost (for experiment testing), by executing the following in the terminal:
+//      openssl req -nodes -new -x509 -out testlocalssl.cert -keyout testlocalssl.key
+// after execution, the most important question is "Common Name (eg, fully qualified host name) " ..... 
+// this one you should put in domain name, e.g. "www.example.com" then domain name is "example.com", in our case it is "localhost"
