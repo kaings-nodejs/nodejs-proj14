@@ -1,2 +1,4 @@
 node_modules
 .idea
+testlocalssl.cert
+testlocalssl.key
